@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 USER root
 WORKDIR /root
@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tcpdump \
     vim \
     x11-xserver-utils \
+    openvswitch-switch \
     xterm
 
 COPY scripts /root
