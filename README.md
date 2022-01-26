@@ -4,10 +4,25 @@ This project provides a canonical Kubernetes deployment for [ONOS] 1.14 and beyo
 
 ## Pod Configuration
 
-To install the ONOS Helm chart, download [Helm] and run `helm install`:
+Clone Helm Chart for Atomix
 
 ```
-helm install charts/onos
+cd ~
+git clone --branch master https://github.com/atomix/atomix-helm.git
+```
+
+Clone onos-kubernetes, then in order to install the ONOS Helm chart, download [Helm] and install it.
+
+Then go to:
+cd onos-kubernetes/charts/onos
+
+And run:
+
+helm dependency update
+
+and run `helm install`:
+```
+helm install onos charts/onos
 ```
 
 Atomix uses an anti-affinity policy to ensure cluster state is replicated on distinct hosts.
@@ -49,10 +64,16 @@ helm install --set atomix.resources.requests.cpu=2 --set atomix.resources.reques
 To set the Atomix persistence configuration, override `atomix.persistence` values:
 
 ```
-helm install --set atomix.persistence.size=2Gi --set atomix.persistence.storageClass=local-storage charts/onos
+helm install --set atomix.persistence.size=2Gi --set atomix.persistence.storageClass=standard charts/onos
 ```
 
-We strongly recommend using the `local-storage` storage class.
+Or you can disable atomix persistence
+
+```
+helm install onos charts/onos --set heap=2G --set image.tag=1.14.1 --set atomix.image.tag=3.0.6 --set replicas=5 --set atomix.replicas=3 --set apps={openflow} --set atomix.persistence.enabled=false
+```
+
+Mininet charts and docker image are currently not working.
 
 ### Application Configuration
 
